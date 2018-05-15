@@ -1,5 +1,6 @@
 package com.example.administrator.helloworld;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
     private ImageView imageView;
     public final static String COUNT = "COUNT_STORAGE_BLAH_BLAH";
+    public final static String PREFERENCE_FILE = "MY_PREFERENCE_FILE";
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -21,28 +24,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getApplicationContext().getSharedPreferences(PREFERENCE_FILE, MODE_PRIVATE);
+
         button = findViewById(R.id.button);
         imageView = findViewById(R.id.imageView);
 
-        if (savedInstanceState != null) {
-            count = savedInstanceState.getInt(COUNT, 0);
+        if (sharedPreferences != null) {
+            count = sharedPreferences.getInt(COUNT, 0);
             button.setText(count + "");
         }
 
         Toast.makeText(getApplicationContext(), "Activity Created!", Toast.LENGTH_SHORT).show();
         Log.v("potato", "Activity Created!");
     }
-
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.v("potato", "saving state");
-        outState.putInt(COUNT, count);
-    }
-
-
 
     public void countUp(View view) {
         count = Integer.parseInt(button.getText().toString()) + 1;
@@ -72,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(COUNT, count);
+        editor.apply();
 
         Toast.makeText(getApplicationContext(), "Paused", Toast.LENGTH_SHORT).show();
         Log.v("potato", "Paused");
