@@ -1,5 +1,6 @@
 package com.example.administrator.helloworld;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     public final static String COUNT = "COUNT_STORAGE_BLAH_BLAH";
     public final static String PREFERENCE_FILE = "MY_PREFERENCE_FILE";
+    public final static String COUNT_MESSAGE = "com.example.counter.count";
+
     SharedPreferences sharedPreferences;
 
 
@@ -36,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Activity Created!", Toast.LENGTH_SHORT).show();
         Log.v("potato", "Activity Created!");
+    }
+
+    public void goToDetail(View view) {
+        Intent intent = new Intent(this, Details.class);
+        intent.putExtra(COUNT_MESSAGE, count);
+        startActivity(intent);
     }
 
     public void countUp(View view) {
